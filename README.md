@@ -1,4 +1,10 @@
-# Heroku Node.js Buildpack: Yoga
+# Heroku Node.js Buildpack
+
+## imkevinxu Fork
+
+Buildpack has been forked and modified to work with [django-kevin](https://github.com/imkevinxu/django-kevin). Most importantly this uses the [Yoga](https://github.com/heroku/heroku-buildpack-nodejs/tree/yoga) version of the official Node.js buildpack and adds additional Grunt functionality from this [fork](https://github.com/mbuchetics/heroku-buildpack-nodejs-grunt)
+
+## Yoga Version
 
 Preview the next version of the node buildpack: yoga.
 It's the most powerful and flexible Node buildpack yet.
