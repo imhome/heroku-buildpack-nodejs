@@ -67,17 +67,11 @@ else modules_source=""
 fi
 
 # What does our cache look like?
-echo $cache_dir
-echo `test -d $cache_dir/node/node_modules`
-echo $modules_cached
 if test -d $cache_dir/node/node_modules; then
   modules_cached=true
 else
   modules_cached=false
 fi
-echo $cache_dir
-echo `test -d $cache_dir/node/node_modules`
-echo $modules_cached
 
 ####### Provide debugging info and feedback
 
