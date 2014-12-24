@@ -192,12 +192,13 @@ echo "export PATH=\"$build_dir/.heroku/node/bin:$build_dir/node_modules/.bin:\$P
 echo "export NODE_HOME=\"$build_dir/.heroku/node\"" >> $bp_dir/export
 
 ####### Check and run Grunt
+head "Grunt"
 if [ -f $build_dir/grunt.js ] || [ -f $build_dir/Gruntfile.js ] || [ -f $build_dir/Gruntfile.coffee ]; then
   # Make sure that Grunt and grunt-cli are installed locally
-  npm install grunt-cli
-  npm install grunt
+  npm install -g grunt-cli | indent
+  npm install grunt | indent
   info "Found Gruntfile, running grunt heroku:$NODE_ENV task"
-  $build_dir/node_modules/.bin/grunt heroku:$NODE_ENV
+  $build_dir/node_modules/.bin/grunt heroku:$NODE_ENV | indent
 
   info "Pruning dev dependencies"
   npm prune --production 2>&1 | indent
