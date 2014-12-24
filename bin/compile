@@ -150,20 +150,20 @@ if [ "$modules_source" == "" ]; then
 
 elif [ $modules_source == "prebuilt" ]; then
   info "Rebuilding any native modules for this architecture"
-  npm rebuild 2>&1
+  npm rebuild 2>&1 | indent
 
 elif $use_cache; then
   info "Restoring node modules from cache"
   cp -r $cache_dir/node/node_modules $build_dir/
   info "Pruning unused dependencies"
-  npm prune 2>&1
+  npm prune 2>&1 | indent
   info "Installing any new modules"
-  npm install --quiet --userconfig $build_dir/.npmrc 2>&1
+  npm install --quiet --userconfig $build_dir/.npmrc 2>&1 | indent
 
 else
   info "Installing node modules"
   touch $build_dir/.npmrc
-  npm install --quiet --userconfig $build_dir/.npmrc 2>&1
+  npm install --quiet --userconfig $build_dir/.npmrc 2>&1 | indent
   info "Deduping dependency tree"
 fi
 
@@ -196,7 +196,9 @@ echo "export PATH=\"$build_dir/.heroku/node/bin:$build_dir/node_modules/.bin:\$P
 echo "export NODE_HOME=\"$build_dir/.heroku/node\"" >> $bp_dir/export
 
 ####### Check and run Grunt
+
 head "Grunt"
+
 if [ -f $build_dir/grunt.js ] || [ -f $build_dir/Gruntfile.js ] || [ -f $build_dir/Gruntfile.coffee ]; then
   # Make sure that Grunt and grunt-cli are installed locally
   npm install -g grunt-cli | indent
