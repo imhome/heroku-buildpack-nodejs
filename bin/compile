@@ -218,7 +218,7 @@ fi
 
 ####### Clean up
 
-info "Cleaning up build artifacts"
+head "Cleaning up build artifacts"
 
 # Clean up after npm
 rm -rf "$build_dir/.node-gyp"
