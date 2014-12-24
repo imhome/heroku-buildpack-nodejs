@@ -67,7 +67,11 @@ else modules_source=""
 fi
 
 # What does our cache look like?
-test -d $cache_dir/node/node_modules && modules_cached=true || modules_cached=false
+if test -d $cache_dir/node/node_modules; then
+  modules_cached=true
+else
+  modules_cached=false
+fi
 
 ####### Provide debugging info and feedback
 
