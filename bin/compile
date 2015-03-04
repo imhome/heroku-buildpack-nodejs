@@ -179,7 +179,7 @@ if [ -f $build_dir/grunt.js ] || [ -f $build_dir/Gruntfile.js ] || [ -f $build_d
     info "Updating grunt-cli if needed"
     npm update grunt-cli -g 2>&1 | indent
 
-    head "Running grunt heroku task"
+    head "Running \"grunt heroku\" task"
     $build_dir/node_modules/grunt-cli/bin/grunt heroku | indent
   else
     # Make sure that Grunt and grunt-cli are installed locally
