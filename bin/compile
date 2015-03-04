@@ -146,15 +146,13 @@ elif [ $modules_source == "prebuilt" ]; then
 elif $use_cache; then
   info "Restoring node modules from cache"
   cp -r $cache_dir/node/node_modules $build_dir/
-  info "Pruning unused dependencies"
-  npm prune 2>&1 | indent
+
   info "Installing any new modules"
   npm install  2>&1 | indent
 
 else
   info "Installing node modules"
   npm install  2>&1 | indent
-  info "Deduping dependency tree"
 fi
 
 ####### Create the runtime environment (profile.d)
@@ -192,8 +190,6 @@ if [ -f $build_dir/grunt.js ] || [ -f $build_dir/Gruntfile.js ] || [ -f $build_d
     head "Running grunt heroku task"
     $heroku_dir/node/lib/node_modules/grunt-cli/bin/grunt heroku | indent
   fi
-  info "Pruning dev dependencies"
-  npm prune --production 2>&1 | indent
 else
   info "No Gruntfile (grunt.js, Gruntfile.js, Gruntfile.coffee) found"
 fi
@@ -201,6 +197,8 @@ fi
 ####### Clean up
 
 head "Cleaning up build artifacts"
+info "Pruning dev dependencies"
+npm prune --production 2>&1 | indent
 
 # Clean up after npm
 rm -rf $build_dir/.node-gyp
