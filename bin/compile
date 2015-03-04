@@ -149,12 +149,11 @@ elif $use_cache; then
   info "Pruning unused dependencies"
   npm prune 2>&1 | indent
   info "Installing any new modules"
-  npm install --quiet --userconfig $build_dir/.npmrc 2>&1 | indent
+  npm install --quiet  2>&1 | indent
 
 else
   info "Installing node modules"
-  touch $build_dir/.npmrc
-  npm install --quiet --userconfig $build_dir/.npmrc 2>&1 | indent
+  npm install --quiet  2>&1 | indent
   info "Deduping dependency tree"
 fi
 
@@ -163,15 +162,11 @@ fi
 head "Grunt Heroku task"
 
 if [ -f $build_dir/grunt.js ] || [ -f $build_dir/Gruntfile.js ] || [ -f $build_dir/Gruntfile.coffee ]; then
-  if $use_cache; then
-    # Grunt-cli is cached, check if there's a newer version
-    head "Updating grunt-cli if needed"
-    npm update grunt-cli -g --quiet --userconfig $build_dir/.npmrc 2>&1 | indent
-  else
-    # Make sure that Grunt and grunt-cli are installed locally
-    info "Found Gruntfile, installing grunt-cli"
-    npm install grunt-cli -g --quiet --userconfig $build_dir/.npmrc 2>&1 | indent
-  fi
+  # Make sure that grunt and grunt-cli are installed locally
+  info "Found Gruntfile, installing grunt-cli"
+  npm install grunt-cli -g --quiet  2>&1 | indent
+  npm install grunt --quiet  2>&1 | indent
+
   head "Running grunt heroku task"
   $build_dir/node_modules/.bin/grunt heroku | indent
 
