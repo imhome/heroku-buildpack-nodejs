@@ -196,11 +196,9 @@ if [ -f $build_dir/grunt.js ] || [ -f $build_dir/Gruntfile.js ] || [ -f $build_d
   npm install grunt-cli 2>&1 | indent
   npm install grunt 2>&1 | indent
 
-  echo ""
-  info "Running grunt heroku:$NODE_ENV task"
+  head "Running grunt heroku:$NODE_ENV task"
   $build_dir/node_modules/.bin/grunt heroku:$NODE_ENV | indent
 
-  echo ""
   info "Pruning dev dependencies"
   npm prune --production 2>&1 | indent
 else
@@ -234,6 +232,4 @@ if test -d $build_dir/node_modules; then
   rm -rf $build_dir/node_modules
 fi
 
-# Show the final dependency tree
-info "Build successful!"
-(npm ls --depth=0 || true) 2>/dev/null | indent
+head "Node.js and grunt build successful!"
