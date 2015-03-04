@@ -207,7 +207,7 @@ echo $bp_version > $cache_dir/node/bp-version
 if test -d $build_dir/node_modules; then
   info "Caching node_modules for future builds"
   cp -r $build_dir/node_modules $cache_dir/node
-  cp -r $heroku_dir/node/lib/node_modules/grunt-cli $cache_dir/node_modules
+  cp -r $heroku_dir/node/lib/node_modules/grunt-cli $cache_dir/node/node_modules
 
   rm -rf $build_dir/node_modules
   rm -rf $heroku_dir/node

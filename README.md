@@ -4,7 +4,7 @@
 
 Buildpack has been forked and modified to work with [django-kevin](https://github.com/imkevinxu/django-kevin). Most importantly this uses the [Yoga](https://github.com/heroku/heroku-buildpack-nodejs/tree/yoga) version of the official Node.js buildpack and adds additional Grunt functionality from this [fork](https://github.com/mbuchetics/heroku-buildpack-nodejs-grunt)
 
-Additional modifications from the fork the [imkevinxu fork](https://github.com/imkevinxu/heroku-buildpack-nodejs) to reduce the compressed slug.
+Additional modifications from the fork [imkevinxu fork](https://github.com/imkevinxu/heroku-buildpack-nodejs) to reduce the compressed slug and customize usage of node only for grunt and not for the actual application.
 
 ## Yoga Version
 
