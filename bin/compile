@@ -168,7 +168,7 @@ if [ -f $build_dir/grunt.js ] || [ -f $build_dir/Gruntfile.js ] || [ -f $build_d
   #   npm update grunt-cli -g 2>&1 | indent
 
   #   head "Running grunt heroku task"
-  #   $build_dir/node_modules/grunt-cli/.bin/grunt heroku | indent
+  #   $build_dir/node_modules/grunt-cli/bin/grunt heroku | indent
   # else
     # Make sure that Grunt and grunt-cli are installed locally
     info "Found Gruntfile, installing grunt-cli and grunt"
@@ -176,7 +176,7 @@ if [ -f $build_dir/grunt.js ] || [ -f $build_dir/Gruntfile.js ] || [ -f $build_d
     npm install grunt 2>&1 | indent
 
     head "Running grunt heroku task"
-    $heroku_dir/node/lib/node_modules/grunt-cli/.bin/grunt heroku | indent
+    $heroku_dir/node/lib/node_modules/grunt-cli/bin/grunt heroku | indent
   # fi
   info "Pruning dev dependencies"
   npm prune --production 2>&1 | indent
