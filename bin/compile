@@ -158,46 +158,22 @@ else
   info "Deduping dependency tree"
 fi
 
-####### Create a Procfile if possible
-
-head "Checking startup method"
-
-if [ "$start_method" == "Procfile" ]; then
-  info "Found Procfile"
-elif [ "$start_method" == "npm start" ]; then
-  info "No Procfile; Adding 'web: npm start' to new Procfile"
-  echo "web: npm start" > $build_dir/Procfile
-elif [ "$start_method" == "server.js" ]; then
-  info "No Procfile; Adding 'web: node server.js' to new Procfile"
-  echo "web: node server.js" > $build_dir/Procfile
-fi
-
-####### Create the runtime environment (profile.d)
-
-head "Finalizing build"
-
-# Runtime & Multi-buildpack exports
-info "Creating runtime environment"
-mkdir -p $build_dir/.profile.d
-echo "export PATH=\"\$HOME/.heroku/node/bin:\$HOME/bin:\$HOME/node_modules/.bin:\$PATH\"" > $build_dir/.profile.d/nodejs.sh
-echo "export NODE_HOME=\"\$HOME/.heroku/node\"" >> $build_dir/.profile.d/nodejs.sh
-
-info "Exporting binary paths"
-echo "export PATH=\"$build_dir/.heroku/node/bin:$build_dir/node_modules/.bin:\$PATH\"" > $bp_dir/export
-echo "export NODE_HOME=\"$build_dir/.heroku/node\"" >> $bp_dir/export
-
 ####### Check and run Grunt
 
 head "Grunt Heroku task"
 
 if [ -f $build_dir/grunt.js ] || [ -f $build_dir/Gruntfile.js ] || [ -f $build_dir/Gruntfile.coffee ]; then
-  # Make sure that Grunt and grunt-cli are installed locally
-  info "Found Gruntfile, installing grunt-cli and grunt"
-  npm install grunt-cli 2>&1 | indent
-  npm install grunt 2>&1 | indent
-
-  head "Running grunt heroku:$NODE_ENV task"
-  $build_dir/node_modules/.bin/grunt heroku:$NODE_ENV | indent
+  if $use_cache; then
+    # Grunt-cli is cached, check if there's a newer version
+    head "Updating grunt-cli if needed"
+    npm update grunt-cli -g --quiet --userconfig $build_dir/.npmrc 2>&1 | indent
+  else
+    # Make sure that Grunt and grunt-cli are installed locally
+    info "Found Gruntfile, installing grunt-cli"
+    npm install grunt-cli -g --quiet --userconfig $build_dir/.npmrc 2>&1 | indent
+  fi
+  head "Running grunt heroku task"
+  $build_dir/node_modules/.bin/grunt heroku | indent
 
   info "Pruning dev dependencies"
   npm prune --production 2>&1 | indent
@@ -217,7 +193,6 @@ rm -rf $build_dir/.node-gyp
 rm -rf $build_dir/.npm
 
 # Clear the cache
-rm -rf $cache_dir/node_modules # (for apps still on the older caching strategy)
 rm -rf $cache_dir/node
 
 ####### Build successful! Store results in cache
@@ -236,3 +211,4 @@ if test -d $build_dir/node_modules; then
 fi
 
 head "Node.js and grunt build successful!"
+echo ""
