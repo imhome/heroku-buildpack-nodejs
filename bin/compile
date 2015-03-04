@@ -209,9 +209,12 @@ fi
 
 head "Cleaning up build artifacts"
 
+# Remove node from slug
+rm -rf $heroku_dir/node
+
 # Clean up after npm
-rm -rf "$build_dir/.node-gyp"
-rm -rf "$build_dir/.npm"
+rm -rf $build_dir/.node-gyp
+rm -rf $build_dir/.npm
 
 # Clear the cache
 rm -rf $cache_dir/node_modules # (for apps still on the older caching strategy)
