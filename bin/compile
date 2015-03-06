@@ -169,6 +169,20 @@ info "Exporting binary paths"
 echo "export PATH=\"$build_dir/.heroku/node/bin:$build_dir/node_modules/.bin:\$PATH\"" > $bp_dir/export
 echo "export NODE_HOME=\"$build_dir/.heroku/node\"" >> $bp_dir/export
 
+####### Check and download yuglify
+
+head "Downloading yuglify for django-pipeline"
+
+if $use_cache && [ -d $build_dir/node_modules/yuglify ]; then
+  # Yuglify is cached, check if there's a newer version
+  info "Updating yuglfy if needed"
+  npm update yuglify -g 2>&1 | indent
+else
+  # Install yuglify globally for django to use
+  info "Installing yuglify"
+  npm install yuglify -g 2>&1 | indent
+fi
+
 ####### Check and run Grunt
 
 head "Grunt Heroku task"
@@ -223,7 +237,6 @@ if test -d $build_dir/node_modules; then
   npm prune --production 2>&1 | indent
 
   rm -rf $build_dir/node_modules
-  rm -rf $heroku_dir/node
 fi
 
 head "Node.js and Grunt build successful!"
