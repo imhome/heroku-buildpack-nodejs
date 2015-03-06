@@ -155,6 +155,10 @@ else
   npm install  2>&1 | indent
 fi
 
+# Install yuglify globally for django to use
+info "Installing yuglify  for django-pipeline"
+npm install yuglify -g 2>&1 | indent
+
 ####### Create the runtime environment (profile.d)
 
 head "Finalizing build"
@@ -168,20 +172,6 @@ echo "export NODE_HOME=\"\$HOME/.heroku/node\"" >> $build_dir/.profile.d/nodejs.
 info "Exporting binary paths"
 echo "export PATH=\"$build_dir/.heroku/node/bin:$build_dir/node_modules/.bin:\$PATH\"" > $bp_dir/export
 echo "export NODE_HOME=\"$build_dir/.heroku/node\"" >> $bp_dir/export
-
-####### Check and download yuglify
-
-head "Downloading yuglify for django-pipeline"
-
-if $use_cache && [ -d $build_dir/node_modules/yuglify ]; then
-  # Yuglify is cached, check if there's a newer version
-  info "Updating yuglfy if needed"
-  npm update yuglify -g 2>&1 | indent
-else
-  # Install yuglify globally for django to use
-  info "Installing yuglify"
-  npm install yuglify -g 2>&1 | indent
-fi
 
 ####### Check and run Grunt
 
